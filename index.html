@@ -1,0 +1,294 @@
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <h1>SRM GPA Calculator</h1>
+        <p class="grade-points">Grade Points: O (10), A+ (9), A (8), B+ (7), B (6), C (5), F (0)</p>
+    </div>
+
+    <!-- Instructions -->
+    <div class="instructions">
+        <h2>How to Use:</h2>
+        <ol>
+            <li>Click 'Add Course' to add a new course.</li>
+            <li>Enter course credits (1-5).</li>
+            <li>Select your grade from the dropdown.</li>
+            <li>Repeat for all courses.</li>
+            <li>Click 'Calculate GPA' to get your result.</li>
+            <li>Use 'Reset' to clear all inputs.</li>
+        </ol>
+    </div>
+
+    <!-- Course Inputs -->
+    <div id="courses">
+        <div class="course-row">
+            <input type="number" placeholder="Credits" min="1" max="5" class="credits">
+            <select class="grade">
+                <option value="10">O</option>
+                <option value="9">A+</option>
+                <option value="8">A</option>
+                <option value="7">B+</option>
+                <option value="6">B</option>
+                <option value="5">C</option>
+                <option value="0">F</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="add-course">
+        <button onclick="addCourse()">Add Course +</button>
+    </div>
+    <div>
+        <button class="calculate-btn" onclick="calculateGPA()">Calculate GPA</button>
+        <button class="reset-btn" onclick="resetCalculator()">Reset</button>
+    </div>
+
+    <!-- Results -->
+    <div id="results">
+        <h2>Your GPA: <span id="gpaValue">-</span></h2>
+    </div>
+</div>
+
+<script>
+    // Add Course Function
+    function addCourse() {
+        const coursesDiv = document.getElementById('courses');
+        const newCourse = document.createElement('div');
+        newCourse.className = 'course-row';
+        newCourse.innerHTML = `
+            <input type="number" placeholder="Credits" min="1" max="5" class="credits">
+            <select class="grade">
+                <option value="10">O</option>
+                <option value="9">A+</option>
+                <option value="8">A</option>
+                <option value="7">B+</option>
+                <option value="6">B</option>
+                <option value="5">C</option>
+                <option value="0">F</option>
+            </select>
+        `;
+        coursesDiv.appendChild(newCourse);
+    }
+
+    // Calculate GPA Function
+    function calculateGPA() {
+        const creditInputs = document.querySelectorAll('.credits');
+        const gradeSelects = document.querySelectorAll('.grade');
+        
+        let totalCredits = 0;
+        let totalPoints = 0;
+
+        creditInputs.forEach((input, index) => {
+            const credits = parseFloat(input.value);
+            const grade = parseFloat(gradeSelects[index].value);
+
+            if (credits && !isNaN(credits) && credits >= 1 && credits <= 5) {
+                totalCredits += credits;
+                totalPoints += credits * grade;
+            }
+        });
+
+        if (totalCredits === 0) {
+            alert('Please enter valid credit values (1-5)');
+            return;
+        }
+
+        const gpa = totalPoints / totalCredits;
+        document.getElementById('gpaValue').textContent = gpa.toFixed(2);
+    }
+
+    // Reset Calculator Function
+    function resetCalculator() {
+        const coursesDiv = document.getElementById('courses');
+        coursesDiv.innerHTML = `
+            <div class="course-row">
+                <input type="number" placeholder="Credits" min="1" max="5" class="credits">
+                <select class="grade">
+                    <option value="10">O</option>
+                    <option value="9">A+</option>
+                    <option value="8">A</option>
+                    <option value="7">B+</option>
+                    <option value="6">B</option>
+                    <option value="5">C</option>
+                    <option value="0">F</option>
+                </select>
+            </div>
+        `;
+        document.getElementById('gpaValue').textContent = '-';
+    }
+</script>
+
+<style>
+    /* Add the CSS code here */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        background: linear-gradient(135deg, #004080, #00264d);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .container {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        padding: 30px;
+        max-width: 800px;
+        width: 100%;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .header h1 {
+        color: #004080;
+        font-size: 2.5em;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .header p {
+        color: #666;
+        font-size: 0.95em;
+    }
+
+    .instructions {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+    }
+
+    .instructions h2 {
+        color: #004080;
+        font-size: 1.3em;
+        margin-bottom: 15px;
+    }
+
+    .instructions ol {
+        padding-left: 20px;
+        color: #555;
+    }
+
+    .instructions li {
+        margin-bottom: 10px;
+    }
+
+    .course-row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+        align-items: center;
+    }
+
+    .course-row input,
+    .course-row select {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        width: 100%;
+        font-size: 1em;
+        transition: border-color 0.3s;
+    }
+
+    .course-row input:focus,
+    .course-row select:focus {
+        border-color: #004080;
+        outline: none;
+    }
+
+    .add-course {
+        margin-bottom: 20px;
+    }
+
+    .add-course button,
+    .calculate-btn,
+    .reset-btn {
+        background: #004080;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background 0.3s, transform 0.2s;
+    }
+
+    .add-course button:hover,
+    .calculate-btn:hover,
+    .reset-btn:hover {
+        background: #00264d;
+        transform: translateY(-2px);
+    }
+
+    .reset-btn {
+        background: #ff4d4d;
+        margin-left: 10px;
+    }
+
+    .reset-btn:hover {
+        background: #cc0000;
+    }
+
+    #results {
+        margin-top: 25px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        text-align: center;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    #results h2 {
+        color: #004080;
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }
+
+    #gpaValue {
+        font-size: 2em;
+        font-weight: 600;
+        color: #004080;
+    }
+
+    .grade-points {
+        color: #666;
+        font-size: 0.9em;
+        margin-bottom: 20px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+        .course-row {
+            flex-direction: column;
+        }
+
+        .course-row input,
+        .course-row select {
+            width: 100%;
+        }
+
+        .add-course button,
+        .calculate-btn,
+        .reset-btn {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+</style>
