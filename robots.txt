@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap:https://kamil4643.github.io/SRM-GPA-Calculator/
